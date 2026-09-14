@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Depression Predictor</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #2d3748;
+      margin-bottom: 8px;
+      font-size: 1.8rem;
+    }
+    p.subtitle {
+      text-align: center;
+      color: #718096;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+    }
+    .card {
+      background: white;
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #4a5568;
+    }
+    input, select {
+      padding: 9px 12px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: #2d3748;
+      background: #f7fafc;
+      transition: border 0.2s;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+    }
+    button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 13px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: #5a67d8; }
+
+    .result {
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+      border-radius: 12px;
+      padding: 24px 30px;
+      text-align: center;
+    }
+    .result.high {
+      background: #fff5f5;
+      border: 2px solid #fc8181;
+    }
+    .result.low {
+      background: #f0fff4;
+      border: 2px solid #68d391;
+    }
+    .result h2 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+    .result.high h2 { color: #c53030; }
+    .result.low h2  { color: #276749; }
+    .result p { color: #4a5568; font-size: 0.95rem; }
+
+    .map-card {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 24px 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .map-card h3 {
+      color: #2d3748;
+      margin-bottom: 6px;
+      font-size: 1.1rem;
+    }
+    .map-card p {
+      color: #718096;
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+    }
+    .map-card input {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .map-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #48bb78;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+    .map-btn:hover { background: #38a169; }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Student Mental Wellness Risk Predictor</h1>
+  <p class="subtitle">Fill in your details below to check your mental health risk level</p>
+
+  <div class="card">
+    <form method="POST">
+      <div class="grid">
+
+        <div class="field">
+          <label>Gender</label>
+          <select name="Gender">
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Age</label>
+          <input type="number" name="Age" placeholder="e.g. 21" required />
+        </div>
+
+        <div class="field">
+          <label>Academic Pressure (1-5)</label>
+          <input type="number" name="Academic Pressure" min="1" max="5" placeholder="1-5" required />
+        </div>
+
+        <div class="field">
+          <label>Work Pressure (0-5)</label>
+          <input type="number" name="Work Pressure" min="0" max="5" placeholder="0-5" required />
+        </div>
+
+        <div class="field">
+          <label>CGPA</label>
+          <input type="number" step="0.01" name="CGPA" placeholder="e.g. 7.5" required />
+        </div>
+
+        <div class="field">
+          <label>Study Satisfaction (1-5)</label>
+          <input type="number" name="Study Satisfaction" min="1" max="5" placeholder="1-5" required />
+        </div>
+
+        <div class="field">
+          <label>Job Satisfaction (0-5)</label>
+          <input type="number" name="Job Satisfaction" min="0" max="5" placeholder="0-5" required />
+        </div>
+
+        <div class="field">
+          <label>Sleep Duration</label>
+          <select name="Sleep Duration">
+            <option>Less than 5 hours</option>
+            <option>5-6 hours</option>
+            <option>7-8 hours</option>
+            <option>More than 8 hours</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Dietary Habits</label>
+          <select name="Dietary Habits">
+            <option>Healthy</option>
+            <option>Moderate</option>
+            <option>Unhealthy</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Degree</label>
+          <select name="Degree">
+            <option>B.Pharm</option>
+            <option>BSc</option>
+            <option>BA</option>
+            <option>BCA</option>
+            <option>M.Tech</option>
+            <option>MBA</option>
+            <option>MCA</option>
+            <option>MSc</option>
+            <option>B.Tech</option>
+            <option>BBA</option>
+            <option>BEd</option>
+            <option>BE</option>
+            <option>B.Com</option>
+            <option>LLB</option>
+            <option>MBBS</option>
+            <option>PhD</option>
+            <option>ME</option>
+            <option>Class 12</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Suicidal Thoughts?</label>
+          <select name="Suicidal Thoughts">
+            <option>No</option>
+            <option>Yes</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Work/Study Hours per day</label>
+          <input type="number" name="Work/Study Hours" min="0" max="24" placeholder="e.g. 6" required />
+        </div>
+
+        <div class="field">
+          <label>Financial Stress (1-5)</label>
+          <input type="number" name="Financial Stress" min="1" max="5" placeholder="1-5" required />
+        </div>
+
+        <div class="field">
+          <label>Family History of Mental Illness</label>
+          <select name="Family History">
+            <option>No</option>
+            <option>Yes</option>
+          </select>
+        </div>
+
+      </div>
+      <button type="submit">🔍 Predict</button>
+    </form>
+  </div>
+
+  {% if prediction %}
+  <div class="result {{ risk_level }}">
+    {% if risk_level == "high" %}
+      <h2>⚠️ {{ prediction }}</h2>
+      <p>Based on your responses, you may be experiencing signs of depression. Please consider reaching out to a mental health professional.</p>
+    {% else %}
+      <h2>✅ {{ prediction }}</h2>
+      <p>Great! Your responses suggest you are currently not at high risk. Keep maintaining healthy habits!</p>
+    {% endif %}
+  </div>
+
+  <div class="map-card">
+    <h3>🗺️ Find Support Near You</h3>
+    <p>Enter your city to find nearby psychologists and counsellors</p>
+    <input type="text" id="cityInput" placeholder="Enter your city (e.g. Bangalore)" />
+    <br/>
+    <a id="mapLink" class="map-btn" href="#" target="_blank"
+       onclick="
+         var city = document.getElementById('cityInput').value || 'your city';
+         this.href = 'https://www.google.com/maps/search/psychologist+counsellor+near+' + encodeURIComponent(city);
+       ">
+      🔎 Find Psychologists
+    </a>
+  </div>
+  {% endif %}
+
+</body>
+</html>
